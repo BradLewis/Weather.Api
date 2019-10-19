@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace WeatherApi.Controllers
+namespace Weather.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
