@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Weather.Client;
+using System.Threading.Tasks;
 
 namespace Weather.Api.Controllers
 {
@@ -10,19 +12,21 @@ namespace Weather.Api.Controllers
     public class WeatherController : ControllerBase
     {
         private readonly ILogger _logger;
+        private readonly IWeatherClient _client;
 
-        public WeatherController(ILogger<WeatherController> logger)
+        public WeatherController(ILogger<WeatherController> logger, IWeatherClient client)
         {
             _logger = logger;
+            _client = client;
         }
 
         [HttpGet]
-        public IEnumerable<int> Get()
+        public async Task Get()
         {
-            return new int[]
-            {
-                1,2,3,4
-            };
+            var startDate = new DateTime(2000, 1, 1);
+            var endDate = new DateTime(2002, 1, 1);
+            var stationId = 1706;
+            await _client.GetData(stationId, startDate, endDate);
         }
     }
 }
