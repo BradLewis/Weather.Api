@@ -24,6 +24,7 @@ namespace Weather.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<WeatherModel>> Get()
         {
+            _logger.LogInformation("called!");
             var startDate = new DateTime(2000, 1, 1);
             var endDate = new DateTime(2002, 1, 1);
             var stationId = 1706;
