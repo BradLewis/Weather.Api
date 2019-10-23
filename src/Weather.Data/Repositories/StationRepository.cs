@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Weather.Data.Models;
 using Weather.Data.Repositories.Interfaces;
@@ -8,9 +10,21 @@ namespace Weather.Data.Repositories
 {
     public class StationRepository : IStationRepository
     {
-        public Task<Station> GetById(int id)
+        private readonly IDatabaseService _databaseService;
+        
+        public StationRepository( IDatabaseService databaseService)
         {
-            throw new NotImplementedException();
+            _databaseService = databaseService;
+        }
+
+        public async Task<Station> GetById(int id)
+        {
+            using (var connection = _databaseService.GetConnection())
+            {
+                var query = "SELECT TOP 1 * FROM Stations WHERE Id = @Id";
+                var result = await connection.QueryAsync<Station>(query, new { Id = id });
+                return result.FirstOrDefault();
+            }
         }
 
         public Task<IEnumerable<Station>> GetByName(string name)
