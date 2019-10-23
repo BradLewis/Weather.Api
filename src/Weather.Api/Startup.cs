@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Weather.Client;
+using Weather.Data;
 using Weather.Data.Repositories;
 using Weather.Data.Repositories.Interfaces;
 
@@ -24,6 +25,10 @@ namespace Weather.Api
             services.AddControllers();
 
             services.AddHttpClient();
+
+            services.AddTransient<IDatabaseService>(s =>
+                new DatabaseService(Configuration.GetConnectionString("WeatherDB"))
+            );
             services.AddTransient<IWeatherClient, EnvironmentCanadaClient>();
             services.AddTransient<IStationRepository, StationRepository>();
         }
