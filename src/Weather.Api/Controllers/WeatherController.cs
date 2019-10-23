@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using Weather.Client;
 using Weather.Client.Models;
 using System.Threading.Tasks;
+using Weather.Data.Repositories.Interfaces;
+using Weather.Data.Models;
 
 namespace Weather.Api.Controllers
 {
@@ -14,11 +16,13 @@ namespace Weather.Api.Controllers
     {
         private readonly ILogger _logger;
         private readonly IWeatherClient _client;
+        private readonly IStationRepository _stationRepository;
 
-        public WeatherController(ILogger<WeatherController> logger, IWeatherClient client)
+        public WeatherController(ILogger<WeatherController> logger, IWeatherClient client, IStationRepository stationRepository)
         {
             _logger = logger;
             _client = client;
+            _stationRepository = stationRepository;
         }
 
         [HttpGet]
@@ -29,6 +33,13 @@ namespace Weather.Api.Controllers
             var endDate = new DateTime(2002, 1, 1);
             var stationId = 1706;
             return await _client.GetData(stationId, startDate, endDate);
+        }
+
+        [HttpGet]
+        [Route("Station")]
+        public async Task<Station> Station(int id)
+        {
+            return await _stationRepository.GetById(id);
         }
     }
 }
