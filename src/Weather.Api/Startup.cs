@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Weather.Client;
+using Weather.Data.Repositories;
+using Weather.Data.Repositories.Interfaces;
 
 namespace Weather.Api
 {
@@ -23,6 +25,7 @@ namespace Weather.Api
 
             services.AddHttpClient();
             services.AddTransient<IWeatherClient, EnvironmentCanadaClient>();
+            services.AddTransient<IStationRepository, StationRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
