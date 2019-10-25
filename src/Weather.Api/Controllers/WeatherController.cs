@@ -15,13 +15,13 @@ namespace Weather.Api.Controllers
     public class WeatherController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IWeatherClient _client;
+        private readonly IWeatherClient _weatherClient;
         private readonly IStationRepository _stationRepository;
 
-        public WeatherController(ILogger<WeatherController> logger, IWeatherClient client, IStationRepository stationRepository)
+        public WeatherController(ILogger<WeatherController> logger, IWeatherClient weatherClient, IStationRepository stationRepository)
         {
             _logger = logger;
-            _client = client;
+            _weatherClient = weatherClient;
             _stationRepository = stationRepository;
         }
 
@@ -32,7 +32,15 @@ namespace Weather.Api.Controllers
             var startDate = new DateTime(2000, 1, 1);
             var endDate = new DateTime(2002, 1, 1);
             var stationId = 1706;
-            return await _client.GetData(stationId, startDate, endDate);
+            return await _weatherClient.GetData(stationId, startDate, endDate);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<WeatherModel>> GetWeather(int id, DateTime startDate, DateTime endDate)
+        {
+            var station = await _stationRepository.GetById(id);
+            var weatherData = await _weatherClient.GetData(station.StationId, startDate, endDate);
+            return weatherData;
         }
     }
 }
