@@ -34,12 +34,5 @@ namespace Weather.Api.Controllers
             var stationId = 1706;
             return await _client.GetData(stationId, startDate, endDate);
         }
-
-        [HttpGet]
-        [Route("Station")]
-        public async Task<Station> Station(int id)
-        {
-            return await _stationRepository.GetById(id);
-        }
     }
 }
