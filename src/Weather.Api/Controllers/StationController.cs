@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Weather.Data.Models;
@@ -19,10 +20,16 @@ namespace Weather.Api.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<Station> Index(int id)
+        [HttpGet("id/{id}")]
+        public async Task<Station> GetById(int id)
         {
             return await _stationRepository.GetById(id);
+        }
+
+        [HttpGet("name/{name}")]
+        public async Task<IEnumerable<Station>> GetByName(string name)
+        {
+            return await _stationRepository.GetByName(name);
         }
     }
 }

@@ -27,9 +27,14 @@ namespace Weather.Data.Repositories
             }
         }
 
-        public Task<IEnumerable<Station>> GetByName(string name)
+        public async Task<IEnumerable<Station>> GetByName(string name)
         {
-            throw new NotImplementedException();
+            using (var connection = _databaseService.GetConnection())
+            {
+                var query = "SELECT TOP 10 * FROM Stations WHERE StationName LIKE '%' + @StationName + '%';";
+                var result = await connection.QueryAsync<Station>(query, new { StationName = name });
+                return result;
+            }
         }
     }
 }
