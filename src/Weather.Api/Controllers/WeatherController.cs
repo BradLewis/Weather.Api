@@ -28,9 +28,17 @@ namespace Weather.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<WeatherModel>> GetWeather(int id, DateTime startDate, DateTime endDate)
         {
-            var station = await _stationRepository.GetById(id);
-            var weatherData = await _weatherClient.GetData(station.StationId, startDate, endDate);
-            return weatherData;
+            try
+            {
+                var station = await _stationRepository.GetById(id);
+                var weatherData = await _weatherClient.GetData(station.StationId, startDate, endDate);
+                return weatherData;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error occurred getting data for id", e, id);
+                return new List<WeatherModel>();
+            }
         }
     }
 }

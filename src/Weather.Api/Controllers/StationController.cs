@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,13 +24,29 @@ namespace Weather.Api.Controllers
         [HttpGet("id/{id}")]
         public async Task<Station> GetById(int id)
         {
-            return await _stationRepository.GetById(id);
+            try
+            {
+                return await _stationRepository.GetById(id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error occurred getting station by id.", e, id);
+                return new Station();
+            }
         }
 
         [HttpGet("name/{name}")]
         public async Task<IEnumerable<Station>> GetByName(string name)
         {
-            return await _stationRepository.GetByName(name);
+            try
+            {
+                return await _stationRepository.GetByName(name);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error occurred getting station by name.", e, name);
+                return new List<Station>();
+            }
         }
     }
 }
