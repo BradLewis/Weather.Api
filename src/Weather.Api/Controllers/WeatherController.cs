@@ -7,6 +7,7 @@ using Weather.Client.Models;
 using System.Threading.Tasks;
 using Weather.Data.Repositories.Interfaces;
 using Weather.Data.Models;
+using Weather.Api.Requests;
 
 namespace Weather.Api.Controllers
 {
@@ -37,6 +38,22 @@ namespace Weather.Api.Controllers
             catch (Exception e)
             {
                 _logger.LogError("Error occurred getting data for id", e, id);
+                return new List<WeatherModel>();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IEnumerable<WeatherModel>> PostWeather(WeatherRequest request)
+        {
+            try
+            {
+                var station = await _stationRepository.GetById(request.Id);
+                var weatherData = await _weatherClient.GetData(station.StationId, request.StartDate, request.EndDate);
+                return weatherData;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error occurred getting data for request", e, request);
                 return new List<WeatherModel>();
             }
         }

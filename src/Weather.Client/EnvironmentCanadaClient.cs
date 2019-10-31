@@ -14,12 +14,10 @@ namespace Weather.Client
     public class EnvironmentCanadaClient : IWeatherClient
     {
         private readonly string _endpoint = "http://climate.weather.gc.ca/climate_data/bulk_data_e.html";
-        private readonly ILogger _logger;
         private readonly IHttpClientFactory _clientFactory;
 
-        public EnvironmentCanadaClient(ILogger<EnvironmentCanadaClient> logger, IHttpClientFactory clientFactory)
+        public EnvironmentCanadaClient(IHttpClientFactory clientFactory)
         {
-            _logger = logger;
             _clientFactory = clientFactory;
         }
 

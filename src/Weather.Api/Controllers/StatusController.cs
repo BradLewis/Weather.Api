@@ -12,9 +12,9 @@ namespace Weather.Api.Controllers
     public class StatusController : ControllerBase
     {
         [HttpGet]
-        public bool GetStatus()
+        public IActionResult GetStatus()
         {
-            return true;
+            return Ok("Running");
         }
     }
 }

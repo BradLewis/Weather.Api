@@ -14,7 +14,7 @@ namespace Weather.Api.Controllers
     {
         private readonly IStationRepository _stationRepository;
         private readonly ILogger _logger;
-        
+
         public StationController(IStationRepository stationRepository, ILogger<StationController> logger)
         {
             _stationRepository = stationRepository;
