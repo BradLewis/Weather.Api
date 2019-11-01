@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.IO;
-using CsvHelper;
 using System.Collections.Generic;
-using System.Linq;
 using Weather.Client.Models;
 using Weather.Client.Maps;
 
@@ -14,24 +11,13 @@ namespace Weather.Client
     {
         private readonly string _endpoint;
         private readonly IHttpClientFactory _clientFactory;
+        private readonly ICsvReader _csvReader;
 
-        public EnvironmentCanadaClient(IHttpClientFactory clientFactory, string endpoint)
+        public EnvironmentCanadaClient(IHttpClientFactory clientFactory, ICsvReader csvReader, string endpoint)
         {
             _clientFactory = clientFactory;
             _endpoint = endpoint;
-        }
-
-        private async Task<IEnumerable<WeatherModel>> ReadCsv(HttpResponseMessage response)
-        {
-            using (var stream = await response.Content.ReadAsStreamAsync())
-            using (var reader = new StreamReader(stream))
-            using (var csvReader = new CsvReader(reader))
-            {
-                csvReader.Configuration.RegisterClassMap<EnvironmentCanadaMap>();
-                csvReader.Configuration.MissingFieldFound = null;
-                var records = csvReader.GetRecords<WeatherModel>().ToList();
-                return records;
-            }
+            _csvReader = csvReader;
         }
 
         private async Task<IEnumerable<WeatherModel>> DownloadData(int stationId, DateTime startDate, DateTime endDate)
@@ -49,7 +35,7 @@ namespace Weather.Client
                     var endpoint = $"{_endpoint}?format=csv&stationID={stationId}&Year={date.Year}&Month={date.Month}&Day=14&timeframe=1&submit=Download+Data";
                     var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
                     var response = await client.SendAsync(request);
-                    var result = await ReadCsv(response);
+                    var result = await _csvReader.ReadCsv<EnvironmentCanadaMap>(response);
                     weatherModels.AddRange(result);
 
                     date = date.AddMonths(1);

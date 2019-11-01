@@ -30,12 +30,14 @@ namespace Weather.Api
 
             services.AddMvcCore().AddApiExplorer();
 
+            services.AddTransient<ICsvReader, CsvReader>();
             services.AddTransient<IDatabaseService>(s =>
                 new DatabaseService(Configuration.GetConnectionString("WeatherDB"))
             );
             services.AddTransient<IWeatherClient>(s =>
                 new EnvironmentCanadaClient(
                     s.GetRequiredService<IHttpClientFactory>(),
+                    s.GetRequiredService<ICsvReader>(),
                     Configuration.GetValue<string>("Endpoints:EnvironmentCanada")
                 )
             );
