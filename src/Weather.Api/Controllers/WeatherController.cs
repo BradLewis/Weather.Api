@@ -6,7 +6,6 @@ using Weather.Client;
 using Weather.Client.Models;
 using System.Threading.Tasks;
 using Weather.Data.Repositories.Interfaces;
-using Weather.Data.Models;
 using Weather.Api.Requests;
 
 namespace Weather.Api.Controllers

@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,8 +10,8 @@ namespace Weather.Data.Repositories
     public class StationRepository : IStationRepository
     {
         private readonly IDatabaseService _databaseService;
-        
-        public StationRepository( IDatabaseService databaseService)
+
+        public StationRepository(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }
