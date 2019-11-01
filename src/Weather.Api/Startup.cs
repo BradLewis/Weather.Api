@@ -8,6 +8,7 @@ using Weather.Data;
 using Weather.Data.Repositories;
 using Weather.Data.Repositories.Interfaces;
 using Microsoft.OpenApi.Models;
+using System.Net.Http;
 
 namespace Weather.Api
 {
@@ -32,7 +33,12 @@ namespace Weather.Api
             services.AddTransient<IDatabaseService>(s =>
                 new DatabaseService(Configuration.GetConnectionString("WeatherDB"))
             );
-            services.AddTransient<IWeatherClient, EnvironmentCanadaClient>();
+            services.AddTransient<IWeatherClient>(s =>
+                new EnvironmentCanadaClient(
+                    s.GetRequiredService<IHttpClientFactory>(),
+                    Configuration.GetValue<string>("Endpoints:EnvironmentCanada")
+                )
+            );
             services.AddTransient<IStationRepository, StationRepository>();
 
             services.AddSwaggerGen(c =>

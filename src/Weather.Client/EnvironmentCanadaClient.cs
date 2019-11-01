@@ -12,12 +12,13 @@ namespace Weather.Client
 {
     public class EnvironmentCanadaClient : IWeatherClient
     {
-        private readonly string _endpoint = "http://climate.weather.gc.ca/climate_data/bulk_data_e.html";
+        private readonly string _endpoint;
         private readonly IHttpClientFactory _clientFactory;
 
-        public EnvironmentCanadaClient(IHttpClientFactory clientFactory)
+        public EnvironmentCanadaClient(IHttpClientFactory clientFactory, string endpoint)
         {
             _clientFactory = clientFactory;
+            _endpoint = endpoint;
         }
 
         private async Task<IEnumerable<WeatherModel>> ReadCsv(HttpResponseMessage response)
