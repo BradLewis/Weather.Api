@@ -31,7 +31,7 @@ namespace Weather.Api
             services.AddMvcCore().AddApiExplorer();
 
             services.AddTransient<ICsvReader, CsvReader>();
-            services.AddTransient<IDatabaseService>(s =>
+            services.AddTransient<IDatabaseService>(_ =>
                 new DatabaseService(Configuration.GetConnectionString("WeatherDB"))
             );
             services.AddTransient<IWeatherClient>(s =>
