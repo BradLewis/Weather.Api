@@ -26,7 +26,7 @@ namespace Weather.Api.Controllers
         {
             try
             {
-                return await _stationRepository.GetById(id);
+                return await _stationRepository.GetById(id).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -40,7 +40,7 @@ namespace Weather.Api.Controllers
         {
             try
             {
-                return await _stationRepository.GetByName(name);
+                return await _stationRepository.GetByName(name).ConfigureAwait(false);
             }
             catch (Exception e)
             {

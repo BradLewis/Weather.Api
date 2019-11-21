@@ -30,8 +30,8 @@ namespace Weather.Api.Controllers
         {
             try
             {
-                var station = await _stationRepository.GetById(id);
-                var weatherData = await _weatherClient.GetData(station.StationId, startDate, endDate);
+                var station = await _stationRepository.GetById(id).ConfigureAwait(false);
+                var weatherData = await _weatherClient.GetData(station.StationId, startDate, endDate).ConfigureAwait(false);
                 return weatherData;
             }
             catch (Exception e)
@@ -46,8 +46,8 @@ namespace Weather.Api.Controllers
         {
             try
             {
-                var station = await _stationRepository.GetById(request.Id);
-                var weatherData = await _weatherClient.GetData(station.StationId, request.StartDate, request.EndDate);
+                var station = await _stationRepository.GetById(request.Id).ConfigureAwait(false);
+                var weatherData = await _weatherClient.GetData(station.StationId, request.StartDate, request.EndDate).ConfigureAwait(false);
                 return weatherData;
             }
             catch (Exception e)

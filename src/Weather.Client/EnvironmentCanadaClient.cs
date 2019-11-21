@@ -34,8 +34,8 @@ namespace Weather.Client
 
                     var endpoint = $"{_endpoint}?format=csv&stationID={stationId}&Year={date.Year}&Month={date.Month}&Day=14&timeframe=1&submit=Download+Data";
                     var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
-                    var response = await client.SendAsync(request);
-                    var result = await _csvReader.ReadCsv<EnvironmentCanadaMap>(response);
+                    var response = await client.SendAsync(request).ConfigureAwait(false);
+                    var result = await _csvReader.ReadCsv<EnvironmentCanadaMap>(response).ConfigureAwait(false);
                     weatherModels.AddRange(result);
 
                     date = date.AddMonths(1);
@@ -46,7 +46,7 @@ namespace Weather.Client
 
         public async Task<IEnumerable<WeatherModel>> GetData(int stationId, DateTime startDate, DateTime endDate)
         {
-            return await DownloadData(stationId, startDate, endDate);
+            return await DownloadData(stationId, startDate, endDate).ConfigureAwait(false);
         }
     }
 }
