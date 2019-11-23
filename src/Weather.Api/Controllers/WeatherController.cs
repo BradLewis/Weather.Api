@@ -7,6 +7,7 @@ using Weather.Client.Models;
 using System.Threading.Tasks;
 using Weather.Data.Repositories.Interfaces;
 using Weather.Api.Requests;
+using System.Linq;
 
 namespace Weather.Api.Controllers
 {
@@ -37,6 +38,24 @@ namespace Weather.Api.Controllers
             catch (Exception e)
             {
                 _logger.LogError("Error occurred getting data for id", e, id);
+                return new List<WeatherModel>();
+            }
+        }
+
+        [HttpGet("name/{name}")]
+        public async Task<IEnumerable<WeatherModel>> GetWeatherForToday(string name)
+        {
+            try
+            {
+                var stations = await _stationRepository.GetByName(name).ConfigureAwait(false);
+                var station = stations.FirstOrDefault();
+                var timeNow = DateTime.Now;
+                var weatherData = await _weatherClient.GetData(station.StationId, timeNow, timeNow).ConfigureAwait(false);
+                return weatherData.Where(x => x.DateTime.Day == timeNow.Day);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error occurred getting todays data for name", e, name);
                 return new List<WeatherModel>();
             }
         }

@@ -29,7 +29,7 @@ namespace Weather.Client
             using (var client = _clientFactory.CreateClient())
             {
                 var date = startDate;
-                while (date < endDate)
+                while (date <= endDate)
                 {
                     var endpoint = $"{_endpoint}?format=csv&stationID={stationId}&Year={date.Year}&Month={date.Month}&Day=14&timeframe=1&submit=Download+Data";
                     var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
