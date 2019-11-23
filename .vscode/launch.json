@@ -5,6 +5,26 @@
    "version": "0.2.0",
    "configurations": [
        {
+           "name": ".NET Core Launch (web)",
+           "type": "coreclr",
+           "request": "launch",
+           "preLaunchTask": "build",
+           "program": "${workspaceFolder}/src/Weather.Api/bin/Debug/netcoreapp3.0/Weather.Api.dll",
+           "args": [],
+           "cwd": "${workspaceFolder}/src/Weather.Api",
+           "stopAtEntry": false,
+           "serverReadyAction": {
+               "action": "openExternally",
+               "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"
+           },
+           "env": {
+               "ASPNETCORE_ENVIRONMENT": "Development"
+           },
+           "sourceFileMap": {
+               "/Views": "${workspaceFolder}/Views"
+           }
+       },
+       {
            "name": "Docker: Launch .NET Core (Preview)",
            "type": "docker-coreclr",
            "request": "launch",
