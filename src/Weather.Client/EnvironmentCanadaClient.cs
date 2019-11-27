@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Weather.Client.Models;
 using Weather.Client.Maps;
+using Weather.Client.Models;
 
 namespace Weather.Client
 {

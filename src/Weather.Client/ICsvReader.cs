@@ -1,5 +1,4 @@
-﻿
-using CsvHelper.Configuration;
+﻿using CsvHelper.Configuration;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;

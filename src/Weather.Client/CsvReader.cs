@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using CsvHelper.Configuration;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Weather.Client.Models;
-using CsvHelper.Configuration;
-using System.Linq;
 
 namespace Weather.Client
 {

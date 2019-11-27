@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Weather.Api.Requests;
 using Weather.Client;
 using Weather.Client.Models;
-using System.Threading.Tasks;
 using Weather.Data.Repositories.Interfaces;
-using Weather.Api.Requests;
-using System.Linq;
 
 namespace Weather.Api.Controllers
 {
@@ -32,8 +32,7 @@ namespace Weather.Api.Controllers
             try
             {
                 var station = await _stationRepository.GetById(id).ConfigureAwait(false);
-                var weatherData = await _weatherClient.GetData(station.StationId, startDate, endDate).ConfigureAwait(false);
-                return weatherData;
+                return await _weatherClient.GetData(station.StationId, startDate, endDate).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -66,8 +65,7 @@ namespace Weather.Api.Controllers
             try
             {
                 var station = await _stationRepository.GetById(request.Id).ConfigureAwait(false);
-                var weatherData = await _weatherClient.GetData(station.StationId, request.StartDate, request.EndDate).ConfigureAwait(false);
-                return weatherData;
+                return await _weatherClient.GetData(station.StationId, request.StartDate, request.EndDate).ConfigureAwait(false);
             }
             catch (Exception e)
             {

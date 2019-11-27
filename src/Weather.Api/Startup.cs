@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System.Net.Http;
 using Weather.Client;
 using Weather.Data;
 using Weather.Data.Repositories;
 using Weather.Data.Repositories.Interfaces;
-using Microsoft.OpenApi.Models;
-using System.Net.Http;
 
 namespace Weather.Api
 {
