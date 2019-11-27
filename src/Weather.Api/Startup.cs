@@ -43,10 +43,7 @@ namespace Weather.Api
             );
             services.AddTransient<IStationRepository, StationRepository>();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            });
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,20 +55,14 @@ namespace Weather.Api
             }
 
             app.UseSwagger();
-            app.UseReDoc(c =>
-            {
-                c.SpecUrl("/swagger/v1/swagger.json");
-            });
+            app.UseReDoc(c => c.SpecUrl("/swagger/v1/swagger.json"));
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
