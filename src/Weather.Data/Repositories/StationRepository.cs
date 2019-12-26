@@ -30,7 +30,7 @@ namespace Weather.Data.Repositories
         {
             using (var connection = _databaseService.GetConnection())
             {
-                const string query = "SELECT TOP 10 * FROM Stations WHERE StationName LIKE '%' + @StationName + '%';";
+                const string query = "SELECT TOP 100 * FROM Stations WHERE StationName LIKE '%' + @StationName + '%';";
                 return await connection.QueryAsync<Station>(query, new { StationName = name }).ConfigureAwait(false);
             }
         }
