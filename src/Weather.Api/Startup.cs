@@ -31,16 +31,8 @@ namespace Weather.Api
             services.AddMvcCore().AddApiExplorer();
 
             services.AddTransient<ICsvReader, CsvReader>();
-            services.AddTransient<IDatabaseService>(_ =>
-                new DatabaseService(Configuration.GetConnectionString("WeatherDB"))
-            );
-            services.AddTransient<IWeatherClient>(s =>
-                new EnvironmentCanadaClient(
-                    s.GetRequiredService<IHttpClientFactory>(),
-                    s.GetRequiredService<ICsvReader>(),
-                    Configuration.GetValue<string>("Endpoints:EnvironmentCanada")
-                )
-            );
+            services.AddTransient<IDatabaseService, DatabaseService>();
+            services.AddTransient<IWeatherClient, EnvironmentCanadaClient>();
             services.AddTransient<IStationRepository, StationRepository>();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }));

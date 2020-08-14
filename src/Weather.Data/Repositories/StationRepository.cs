@@ -20,7 +20,7 @@ namespace Weather.Data.Repositories
         {
             using (var connection = _databaseService.GetConnection())
             {
-                const string query = "SELECT TOP 1 * FROM Stations WHERE Id = @Id";
+                const string query = "SELECT * FROM Stations WHERE Id = @Id LIMIT 1";
                 var result = await connection.QueryAsync<Station>(query, new { Id = id }).ConfigureAwait(false);
                 return result.FirstOrDefault();
             }
@@ -30,8 +30,8 @@ namespace Weather.Data.Repositories
         {
             using (var connection = _databaseService.GetConnection())
             {
-                const string query = "SELECT TOP 100 * FROM Stations WHERE StationName LIKE '%' + @StationName + '%';";
-                return await connection.QueryAsync<Station>(query, new { StationName = name }).ConfigureAwait(false);
+                const string query = "SELECT * FROM Stations WHERE StationName ILIKE @StationName LIMIT 100;";
+                return await connection.QueryAsync<Station>(query, new { StationName = $"%{name}%" }).ConfigureAwait(false);
             }
         }
     }

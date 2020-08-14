@@ -1,5 +1,6 @@
-﻿using System.Data;
-using System.Data.SqlClient;
+﻿using Microsoft.Extensions.Configuration;
+using Npgsql;
+using System.Data;
 
 namespace Weather.Data
 {
@@ -7,14 +8,14 @@ namespace Weather.Data
     {
         private readonly string _connectionString;
 
-        public DatabaseService(string connectionString)
+        public DatabaseService(IConfiguration configuration)
         {
-            _connectionString = connectionString;
+            _connectionString = configuration.GetConnectionString("WeatherDB");
         }
 
         public IDbConnection GetConnection()
         {
-            return new SqlConnection(_connectionString);
+            return new NpgsqlConnection(_connectionString);
         }
     }
 }

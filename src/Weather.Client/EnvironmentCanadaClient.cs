@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,10 +14,10 @@ namespace Weather.Client
         private readonly IHttpClientFactory _clientFactory;
         private readonly ICsvReader _csvReader;
 
-        public EnvironmentCanadaClient(IHttpClientFactory clientFactory, ICsvReader csvReader, string endpoint)
+        public EnvironmentCanadaClient(IHttpClientFactory clientFactory, ICsvReader csvReader, IConfiguration configuration)
         {
             _clientFactory = clientFactory;
-            _endpoint = endpoint;
+            _endpoint = configuration.GetValue<string>("Endpoints:EnvironmentCanada");
             _csvReader = csvReader;
         }
 
