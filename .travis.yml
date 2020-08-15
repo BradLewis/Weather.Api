@@ -9,19 +9,26 @@ env:
     - IMAGE=gcr.io/$GCP_PROJECT_ID/Weather.Api
 before_install:
   - openssl aes-256-cbc -K $encrypted_98d237b7dbf4_key -iv $encrypted_98d237b7dbf4_iv -in google-key.json.enc -out google-key.json -d
-  - curl https://sdk.cloud.google.com | bash > /dev/null
-  - source "$HOME/google-cloud-sdk/path.bash.inc"
+  - if [ ! -d ${HOME}/google-cloud-sdk ]; then
+      curl https://sdk.cloud.google.com | bash;
+    fi
+  - tar -xzf credentials.tar.gz
+  - mkdir -p lib
   - gcloud auth activate-service-account --key-file=google-key.json
   - gcloud auth configure-docker   
   - gcloud config set project "${GCP_PROJECT_ID}"
 install: true # no-op
-deploy:
-  - provider: script
-    script: dotnet restore
-    script: dotnet build
-
-  - provider: script
-    script: docker build -t "${IMAGE}:${TRAVIS_COMMIT}"
-    script: docker push "${IMAGE}:${TRAVIS_COMMIT}"
-    on:
-      master
+jobs:
+  include:
+    - stage: build solution
+      script: 
+        - dotnet restore
+        - dotnet build
+    - stage: build and push image
+      script: 
+        - docker build -t "${IMAGE}:${TRAVIS_COMMIT}"
+        - docker push "${IMAGE}:${TRAVIS_COMMIT}"
+stages:
+  - build solution
+  - name: build and push image
+    if: branch = master
