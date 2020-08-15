@@ -27,7 +27,7 @@ jobs:
         - dotnet build
     - stage: build and push image
       script: 
-        - docker build -t "${IMAGE}:${TRAVIS_COMMIT}"
+        - docker build -t "${IMAGE}:${TRAVIS_COMMIT}" .
         - docker push "${IMAGE}:${TRAVIS_COMMIT}"
 stages:
   - build solution
