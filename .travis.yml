@@ -20,6 +20,7 @@ before_install:
   - gcloud auth activate-service-account --key-file=google-key.json
   - gcloud auth configure-docker
   - gcloud config set project "${GCP_PROJECT_ID}"
+  - gcloud components install kubectl
 install: true
 jobs:
   include:
@@ -33,9 +34,9 @@ jobs:
         - docker push "${IMAGE}:${TRAVIS_COMMIT}"
     - stage: deploy api
       script:
-        - gcloud container clusters get_credentials ${CLUSTER} --zone ${ZONE} --project ${GCP_PROJECT_ID}
+        - gcloud container clusters get-credentials ${CLUSTER} --zone ${ZONE} --project ${GCP_PROJECT_ID}
         - kubectl config set-cluster ${CLUSTER}
-        - kubctl apply -f kubernetes/deployment.yaml
+        - kubectl apply -f kubernetes/deployment.yaml
 stages:
   - build solution
   - name: build and push image
