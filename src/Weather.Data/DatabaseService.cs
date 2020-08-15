@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Npgsql;
+using MySql.Data.MySqlClient;
 using System.Data;
 
 namespace Weather.Data
@@ -15,7 +15,7 @@ namespace Weather.Data
 
         public IDbConnection GetConnection()
         {
-            return new NpgsqlConnection(_connectionString);
+            return new MySqlConnection(_connectionString);
         }
     }
 }
