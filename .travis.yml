@@ -15,17 +15,13 @@ before_install:
   - gcloud auth configure-docker   
   - gcloud config set project "${GCP_PROJECT_ID}"
 install: true # no-op
-
 deploy:
   - provider: script
-    script:
-      - docker build -t "${IMAGE}:${TRAVIS_COMMIT}"
-      - docker push "${IMAGE}:${TRAVIS_COMMIT}"
-    on:
-      branch: master
+    script: dotnet restore
+    script: dotnet build
+
   - provider: script
-    script:
-      - dotnet restore
-      - dotnet build
+    script: docker build -t "${IMAGE}:${TRAVIS_COMMIT}"
+    script: docker push "${IMAGE}:${TRAVIS_COMMIT}"
     on:
-      branch: develop
+      master
