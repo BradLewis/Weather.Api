@@ -14,6 +14,7 @@ spec:
       containers:
         - name: {{ .Values.container.name }}
           image: {{ .Values.container.image }}:{{ .Values.container.tag }}
+          imagePullPolicy: IfNotPresent         
           resources:
             limits:
               memory: "128Mi"
@@ -24,5 +25,3 @@ spec:
           env:
             - name: appenvironment
               value: {{ .Values.environment }}
-            - name: ASPNETCORE_URLS
-              value: http://+:80
