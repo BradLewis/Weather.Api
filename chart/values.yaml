@@ -1,0 +1,12 @@
+container:
+    name: weather-api
+    image: gcr.io/weather-286421/weather.api
+    tag: 0.1.0
+    port: 80
+
+label:
+    name: weather-api
+
+service:
+  port: 80
+  type: ClusterIP

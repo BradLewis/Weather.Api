@@ -36,7 +36,7 @@ jobs:
       script:
         - gcloud container clusters get-credentials ${CLUSTER} --zone ${ZONE} --project ${GCP_PROJECT_ID}
         - kubectl config set-cluster ${CLUSTER}
-        - kubectl apply -f kubernetes/deployment.yaml
+        - helm upgrade --install weather-api-production --set-string container.tag=${TRAVIS_COMMIT} chart
 stages:
   - build solution
   - name: build and push image
