@@ -21,6 +21,8 @@ before_install:
   - gcloud auth configure-docker
   - gcloud config set project "${GCP_PROJECT_ID}"
   - gcloud components install kubectl
+  - curl -L https://git.io/get_helm.sh | bash
+  - helm init --client-only
 install: true
 jobs:
   include:
