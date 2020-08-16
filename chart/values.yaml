@@ -5,7 +5,7 @@ container:
     image: gcr.io/weather-286421/weather.api
     tag: 0.1.0
     port: 80
-replicas: 3
+replicas: 1
 
 label:
     name: weather-api
