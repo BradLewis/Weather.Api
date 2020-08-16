@@ -21,8 +21,6 @@ before_install:
   - gcloud auth configure-docker
   - gcloud config set project "${GCP_PROJECT_ID}"
   - gcloud components install kubectl
-  - curl -L https://git.io/get_helm.sh | bash
-  - helm init --client-only
 install: true
 jobs:
   include:
@@ -38,6 +36,8 @@ jobs:
       script:
         - gcloud container clusters get-credentials ${CLUSTER} --zone ${ZONE} --project ${GCP_PROJECT_ID}
         - kubectl config set-cluster ${CLUSTER}
+        - curl -L https://git.io/get_helm.sh | bash
+        - helm init
         - helm upgrade --install weather-api-production --set-string container.tag=${TRAVIS_COMMIT} chart
 stages:
   - build solution
