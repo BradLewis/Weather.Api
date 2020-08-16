@@ -19,8 +19,10 @@ spec:
               memory: "128Mi"
               cpu: "500m"
           ports:
-            - containerPort: 80
+            - containerPort: {{ .Values.container.port }}
               protocol: TCP
           env:
+            - name: appenvironment
+              value: {{ .Values.environment }}
             - name: ASPNETCORE_URLS
               value: http://+:80

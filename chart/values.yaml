@@ -1,3 +1,5 @@
+environment: production
+
 container:
     name: weather-api
     image: gcr.io/weather-286421/weather.api
@@ -9,4 +11,4 @@ label:
 
 service:
   port: 80
-  type: ClusterIP
+  type: LoadBalancer
