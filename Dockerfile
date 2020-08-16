@@ -13,5 +13,4 @@ RUN dotnet publish -c Release -o /app
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 COPY --from=publish /app .
-ENV ASPNETCORE_URLS http://*:8080
 ENTRYPOINT ["dotnet", "Weather.Api.dll"]
