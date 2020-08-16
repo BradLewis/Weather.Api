@@ -37,7 +37,6 @@ jobs:
         - gcloud container clusters get-credentials ${CLUSTER} --zone ${ZONE} --project ${GCP_PROJECT_ID}
         - kubectl config set-cluster ${CLUSTER}
         - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-        - helm init
         - helm upgrade --install weather-api-production --set-string container.tag=${TRAVIS_COMMIT} chart
 stages:
   - build solution
