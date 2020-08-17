@@ -26,7 +26,7 @@ spec:
               value: {{ .Values.environment }}
           volumeMounts:
             - name: secrets
-              mountPath: /app/secrets
+              mountPath: /app
               readOnly: true
       volumes:
         - name: secrets
