@@ -29,3 +29,4 @@ msbuild.wrn
 .vs/
 
 google-key.json
+appsettings.secrets.json
