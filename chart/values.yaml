@@ -15,3 +15,8 @@ label:
 service:
   port: 80
   type: LoadBalancer
+
+sqlproxy:
+    instance: weather-286421:northamerica-northeast1:weatherdb
+    port: 3306
+    image: gcr.io/cloudsql-docker/gce-proxy:1.17
