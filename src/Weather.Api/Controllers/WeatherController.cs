@@ -36,7 +36,7 @@ namespace Weather.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError("Error occurred getting data for id", e, id);
+                _logger.LogError("Error occurred getting data for id. {exception}, {id}", e, id);
                 return new List<WeatherModel>();
             }
         }
@@ -54,7 +54,7 @@ namespace Weather.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError("Error occurred getting todays data for name", e, name);
+                _logger.LogError("Error occurred getting todays data for name. {exception}, {name}", e, name);
                 return new List<WeatherModel>();
             }
         }
@@ -69,7 +69,7 @@ namespace Weather.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError("Error occurred getting data for request", e, request);
+                _logger.LogError("Error occurred getting data for request. {exception}, {request}", e, request);
                 return new List<WeatherModel>();
             }
         }

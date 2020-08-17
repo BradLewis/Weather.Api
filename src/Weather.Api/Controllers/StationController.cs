@@ -30,7 +30,7 @@ namespace Weather.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError("Error occurred getting station by id.", e, id);
+                _logger.LogError("Error occurred getting station by id. {exception}, {id}", e, id);
                 return new Station();
             }
         }
@@ -44,7 +44,7 @@ namespace Weather.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError("Error occurred getting station by name.", e, name);
+                _logger.LogError("Error occurred getting station by name. {exception}, {name}", e, name);
                 return new List<Station>();
             }
         }
