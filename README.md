@@ -5,3 +5,6 @@
 An convenient api wrapper around the Canadian government weather api. 
 
 Docs can be found at /api-docs
+
+Handle secrets:
+`$ kubectl create secret generic secret-appsettings --from-file=./appsettings.secrets.json`
