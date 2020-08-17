@@ -15,6 +15,7 @@ spec:
         app: {{ .Values.label.name }}
         environment: {{ .Values.environment }}
     spec:
+      serviceAccountName: {{ .Values.kubernetesServiceAccount }}
       containers:
         - name: {{ .Values.container.name }}
           image: {{ .Values.container.image }}:{{ .Values.container.tag }}

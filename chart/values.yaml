@@ -7,6 +7,8 @@ container:
     port: 80
 replicas: 1
 
+kubernetesServiceAccount: weather-api-kube-account
+
 label:
     name: weather-api
 
