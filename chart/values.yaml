@@ -14,7 +14,7 @@ label:
 
 service:
   port: 80
-  type: LoadBalancer
+  type: NodePort
 
 sqlproxy:
     instance: weather-286421:northamerica-northeast1:weatherdb
