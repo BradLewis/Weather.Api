@@ -23,12 +23,12 @@ spec:
             - containerPort: {{ .Values.container.port }}
           env:
             - name: appenvironment
-              value: {{ .Values.environment}}
-        volumeMounts:
-        - name: secrets
-          mountPath: /app/secrets
-          readOnly: true
+              value: {{ .Values.environment }}
+          volumeMounts:
+            - name: secrets
+              mountPath: /app/secrets
+              readOnly: true
       volumes:
-      - name: secrets
-        secret:
-          secretName: secret-appsettings          
+        - name: secrets
+          secret:
+            secretName: secret-appsettings          
