@@ -1,18 +1,20 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using Weather.Client;
 using Weather.Data;
 using Weather.Data.Repositories;
 using Weather.Data.Repositories.Interfaces;
+using Weather.Api;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables();
+builder.Configuration.AddSecretsConfiguration(builder.Configuration.GetValue<string>("Secrets:WeatherDB"));
 
 builder.Services.AddControllers();
-
 builder.Services.AddHttpClient();
-
 builder.Services.AddMvcCore().AddApiExplorer();
 
 builder.Services.AddTransient<ICsvReader, CsvReader>();
@@ -24,10 +26,8 @@ builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title =
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
     app.UseDeveloperExceptionPage();
 }

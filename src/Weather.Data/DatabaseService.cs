@@ -10,7 +10,11 @@ namespace Weather.Data
 
         public DatabaseService(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("WeatherDB");
+            var host = configuration["host"];
+            var user = configuration["username"];
+            var password = configuration["password"];
+            var database = configuration["Database"];
+            _connectionString = $"server={host};user={user};password={password};database={database};";
         }
 
         public IDbConnection GetConnection()
