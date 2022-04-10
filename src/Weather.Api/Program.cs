@@ -10,8 +10,10 @@ using Weather.Data.Repositories.Interfaces;
 using Weather.Api;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddEnvironmentVariables();
-builder.Configuration.AddSecretsConfiguration(builder.Configuration.GetValue<string>("Secrets:WeatherDB"));
+builder.Configuration.AddSecretsConfiguration(
+    builder.Configuration.GetValue<string>("Secrets:WeatherDB"),
+    builder.Configuration.GetValue<string>("AWS_REGION")
+);
 
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();

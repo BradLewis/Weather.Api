@@ -11,15 +11,17 @@ namespace Weather.Api
     public class SecretsConfigurationProvider : ConfigurationProvider
     {
         private readonly string _secretName;
+        private readonly string _region;
 
-        public SecretsConfigurationProvider(string secretName)
+        public SecretsConfigurationProvider(string secretName, string region)
         {
             _secretName = secretName;
+            _region = region;
         }
 
         public override void Load()
         {
-            var client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName("us-east-1"));
+            var client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(_region));
             var request = new GetSecretValueRequest
             {
                 SecretId = _secretName
