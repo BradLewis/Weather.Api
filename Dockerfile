@@ -10,7 +10,7 @@ RUN dotnet restore
 FROM build AS publish
 RUN dotnet publish -c Release -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM public.ecr.aws/lambda/dotnet:6 AS base
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Weather.Api.dll"]
+CMD [ "Weather.Api::Weather.Api.LambdaEntryPoint::FunctionHandlerAsync" ]
