@@ -1,16 +1,14 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-
-WORKDIR /app
-
-
-# Copy the main source project files
-COPY . .
-
-RUN dotnet restore
-FROM build AS publish
-RUN dotnet publish -c Release -o /app
-
 FROM public.ecr.aws/lambda/dotnet:6 AS base
-WORKDIR /app
-COPY --from=publish /app .
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
+
+WORKDIR /source
+COPY . .
+RUN dotnet restore
+
+RUN dotnet publish --no-restore -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /var/task
+COPY --from=build /app/publish .
 CMD [ "Weather.Api::Weather.Api.LambdaEntryPoint::FunctionHandlerAsync" ]

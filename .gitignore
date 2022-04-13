@@ -31,3 +31,4 @@ msbuild.wrn
 google-key.json
 appsettings.secrets.json
 .env
+.serverless/
