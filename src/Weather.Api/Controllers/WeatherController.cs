@@ -31,6 +31,7 @@ namespace Weather.Api.Controllers
         {
             try
             {
+                _logger.LogInformation("Received request for weather. {id}, {startDate}, {endDate}", id, startDate, endDate);
                 var station = await _stationRepository.GetById(id).ConfigureAwait(false);
                 return await _weatherClient.GetData(station.StationId, startDate, endDate).ConfigureAwait(false);
             }
@@ -46,6 +47,7 @@ namespace Weather.Api.Controllers
         {
             try
             {
+                _logger.LogInformation("Received request for weather for today. {name}", name);
                 var stations = await _stationRepository.GetByName(name).ConfigureAwait(false);
                 var station = stations.FirstOrDefault();
                 var timeNow = DateTime.Now;
@@ -59,11 +61,12 @@ namespace Weather.Api.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IEnumerable<WeatherModel>> PostWeather(WeatherRequest request)
+        [HttpGet]
+        public async Task<IEnumerable<WeatherModel>> GetWeatherWithRequest(WeatherRequest request)
         {
             try
             {
+                _logger.LogInformation("Received request for weather with model. {id}, {startDate}, {endDate}", request.Id, request.StartDate, request.EndDate);
                 var station = await _stationRepository.GetById(request.Id).ConfigureAwait(false);
                 return await _weatherClient.GetData(station.StationId, request.StartDate, request.EndDate).ConfigureAwait(false);
             }

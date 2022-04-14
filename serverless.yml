@@ -24,7 +24,7 @@ custom:
 
 resources:
   Resources:
-    SetupLambdaRole:
+    WeatherApiRole:
       Type: AWS::IAM::Role
       Properties:
         RoleName: WeatherApiRole
@@ -37,7 +37,7 @@ resources:
                   - lambda.amazonaws.com
               Action: sts:AssumeRole
         Policies:
-          - PolicyName: setupLambdaPolicy
+          - PolicyName: WeatherApiPolicy
             PolicyDocument:
               Version: '2012-10-17'
               Statement:
@@ -63,6 +63,10 @@ resources:
                   Resource: "*"
                 - Effect: Allow
                   Action:
+                    - secretsmanager:ListSecrets
+                  Resource: "*"
+                - Effect: Allow
+                  Action:
                     - secretsmanager:GetSecretValue
                     - secretsmanager:DescribeSecret
                   Resource:
@@ -77,6 +81,8 @@ functions:
   weather-api:
     image:
       name: weather-api
+    role: WeatherApiRole
+    timeout: 300
 
 plugins:
    - serverless-vpc-discovery

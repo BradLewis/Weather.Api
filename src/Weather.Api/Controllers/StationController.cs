@@ -26,6 +26,7 @@ namespace Weather.Api.Controllers
         {
             try
             {
+                _logger.LogInformation("Received request for station by id. {id}", id);
                 return await _stationRepository.GetById(id).ConfigureAwait(false);
             }
             catch (Exception e)
