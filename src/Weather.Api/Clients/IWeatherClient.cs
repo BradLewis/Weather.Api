@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Weather.Client.Models;
+using Weather.Api.Models;
 
-namespace Weather.Client
+namespace Weather.Api.Clients
 {
     public interface IWeatherClient
     {

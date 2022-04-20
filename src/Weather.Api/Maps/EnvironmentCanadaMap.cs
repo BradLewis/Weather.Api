@@ -1,7 +1,7 @@
 ﻿using CsvHelper.Configuration;
-using Weather.Client.Models;
+using Weather.Api.Models;
 
-namespace Weather.Client.Maps
+namespace Weather.Api.Maps
 {
     public class EnvironmentCanadaMap : ClassMap<WeatherModel>
     {

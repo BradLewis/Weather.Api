@@ -5,9 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Weather.Api.Requests;
-using Weather.Client;
-using Weather.Client.Models;
-using Weather.Data.Repositories.Interfaces;
+using Weather.Api.Models;
+using Weather.Api.Clients;
 
 namespace Weather.Api.Controllers
 {
@@ -17,13 +16,13 @@ namespace Weather.Api.Controllers
     {
         private readonly ILogger _logger;
         private readonly IWeatherClient _weatherClient;
-        private readonly IStationRepository _stationRepository;
+        private readonly IStationsClient _stationsClient;
 
-        public WeatherController(ILogger<WeatherController> logger, IWeatherClient weatherClient, IStationRepository stationRepository)
+        public WeatherController(ILogger<WeatherController> logger, IWeatherClient weatherClient, IStationsClient stationsClient)
         {
             _logger = logger;
             _weatherClient = weatherClient;
-            _stationRepository = stationRepository;
+            _stationsClient = stationsClient;
         }
 
         [HttpGet]
@@ -32,7 +31,7 @@ namespace Weather.Api.Controllers
             try
             {
                 _logger.LogInformation("Received request for weather. {id}, {startDate}, {endDate}", id, startDate, endDate);
-                var station = await _stationRepository.GetById(id).ConfigureAwait(false);
+                var station = await _stationsClient.GetById(id).ConfigureAwait(false);
                 return await _weatherClient.GetData(station.StationId, startDate, endDate).ConfigureAwait(false);
             }
             catch (Exception e)
@@ -48,7 +47,7 @@ namespace Weather.Api.Controllers
             try
             {
                 _logger.LogInformation("Received request for weather for today. {name}", name);
-                var stations = await _stationRepository.GetByName(name).ConfigureAwait(false);
+                var stations = await _stationsClient.GetByName(name).ConfigureAwait(false);
                 var station = stations.FirstOrDefault();
                 var timeNow = DateTime.Now;
                 var weatherData = await _weatherClient.GetData(station.StationId, timeNow, timeNow).ConfigureAwait(false);
@@ -67,7 +66,7 @@ namespace Weather.Api.Controllers
             try
             {
                 _logger.LogInformation("Received request for weather with model. {id}, {startDate}, {endDate}", request.Id, request.StartDate, request.EndDate);
-                var station = await _stationRepository.GetById(request.Id).ConfigureAwait(false);
+                var station = await _stationsClient.GetById(request.Id).ConfigureAwait(false);
                 return await _weatherClient.GetData(station.StationId, request.StartDate, request.EndDate).ConfigureAwait(false);
             }
             catch (Exception e)

@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Weather.Client.Maps;
-using Weather.Client.Models;
+using Weather.Api.Maps;
+using Weather.Api.Models;
+using Weather.Api.Readers;
 
-namespace Weather.Client
+namespace Weather.Api.Clients
 {
     public class EnvironmentCanadaClient : IWeatherClient
     {

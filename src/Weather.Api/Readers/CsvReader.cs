@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Weather.Client.Models;
+using Weather.Api.Models;
 
-namespace Weather.Client
+namespace Weather.Api.Readers
 {
     public class CsvReader : ICsvReader
     {

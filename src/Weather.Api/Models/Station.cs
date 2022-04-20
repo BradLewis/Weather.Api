@@ -1,4 +1,4 @@
-﻿namespace Weather.Data.Models
+﻿namespace Weather.Api.Models
 {
     public class Station
     {
