@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -11,14 +11,14 @@ namespace Weather.Api.Clients
 {
     public class EnvironmentCanadaClient : IWeatherClient
     {
-        private readonly string _endpoint;
+        private readonly EndpointSettings _endpointSettings;
         private readonly IHttpClientFactory _clientFactory;
         private readonly ICsvReader _csvReader;
 
-        public EnvironmentCanadaClient(IHttpClientFactory clientFactory, ICsvReader csvReader, IConfiguration configuration)
+        public EnvironmentCanadaClient(IHttpClientFactory clientFactory, ICsvReader csvReader, IOptions<EndpointSettings> endpointSettings)
         {
             _clientFactory = clientFactory;
-            _endpoint = configuration.GetValue<string>("Endpoints:EnvironmentCanada");
+            _endpointSettings = endpointSettings.Value;
             _csvReader = csvReader;
         }
 
@@ -33,7 +33,7 @@ namespace Weather.Api.Clients
                 var date = startDate;
                 while (date <= endDate)
                 {
-                    var endpoint = $"{_endpoint}?format=csv&stationID={stationId}&Year={date.Year}&Month={date.Month}&Day=14&timeframe=1&submit=Download+Data";
+                    var endpoint = $"{_endpointSettings.EnvironmentCanada}?format=csv&stationID={stationId}&Year={date.Year}&Month={date.Month}&Day=14&timeframe=1&submit=Download+Data";
                     var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
                     var response = await client.SendAsync(request).ConfigureAwait(false);
                     var result = await _csvReader.ReadCsv<EnvironmentCanadaMap>(response).ConfigureAwait(false);

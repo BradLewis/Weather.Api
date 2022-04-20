@@ -25,6 +25,9 @@ public class Startup
         services.AddHttpClient();
         services.AddMvcCore().AddApiExplorer();
 
+        services.Configure<EndpointSettings>(Configuration.GetSection(
+                                        EndpointSettings.Endpoints));
+
         services.AddTransient<ICsvReader, CsvReader>();
         services.AddTransient<IWeatherClient, EnvironmentCanadaClient>();
         services.AddTransient<IStationsClient, StationsClient>();
