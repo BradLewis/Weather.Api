@@ -75,5 +75,11 @@ namespace Weather.Api.Controllers
                 return new List<WeatherModel>();
             }
         }
+
+        [HttpGet("status")]
+        public IActionResult GetStatus()
+        {
+            return Ok("Running");
+        }
     }
 }
