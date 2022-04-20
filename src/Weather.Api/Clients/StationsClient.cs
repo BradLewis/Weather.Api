@@ -5,9 +5,9 @@ using Weather.Api.Models;
 
 namespace Weather.Api.Clients;
 
-public class StationClient : IStationsClient
+public class StationsClient : IStationsClient
 {
-	public StationClient()
+	public StationsClient()
 	{
 	}
 

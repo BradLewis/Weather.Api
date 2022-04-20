@@ -27,6 +27,7 @@ public class Startup
 
         services.AddTransient<ICsvReader, CsvReader>();
         services.AddTransient<IWeatherClient, EnvironmentCanadaClient>();
+        services.AddTransient<IStationsClient, StationsClient>();
 
         services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "Weather API", Version = "v1" }));
     }
