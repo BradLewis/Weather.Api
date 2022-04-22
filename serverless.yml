@@ -9,19 +9,6 @@ provider:
         path: ./
         platform: linux/amd64
 
-custom:
-  vpcDiscovery:
-    vpcName: default
-    subnets:
-      - tagKey: az
-        tagValues:
-          - 'us-east-1a'
-          - 'us-east-1d'
-    securityGroups:
-      - tagKey: Name
-        tagValues:
-          - 'weather-api-lambda'
-
 resources:
   Resources:
     WeatherApiRole:
@@ -83,6 +70,3 @@ functions:
       name: weather-api
     role: WeatherApiRole
     timeout: 300
-
-plugins:
-   - serverless-vpc-discovery

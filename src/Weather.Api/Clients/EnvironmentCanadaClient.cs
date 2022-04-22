@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -14,12 +15,14 @@ namespace Weather.Api.Clients
         private readonly EndpointSettings _endpointSettings;
         private readonly IHttpClientFactory _clientFactory;
         private readonly ICsvReader _csvReader;
+        private readonly ILogger<EnvironmentCanadaClient> _logger;
 
-        public EnvironmentCanadaClient(IHttpClientFactory clientFactory, ICsvReader csvReader, IOptions<EndpointSettings> endpointSettings)
+        public EnvironmentCanadaClient(IHttpClientFactory clientFactory, ICsvReader csvReader, IOptions<EndpointSettings> endpointSettings, ILogger<EnvironmentCanadaClient> logger)
         {
             _clientFactory = clientFactory;
             _endpointSettings = endpointSettings.Value;
             _csvReader = csvReader;
+            _logger = logger;
         }
 
         private async Task<IEnumerable<WeatherModel>> DownloadData(int stationId, DateTime startDate, DateTime endDate)
@@ -28,6 +31,7 @@ namespace Weather.Api.Clients
             endDate = new DateTime(endDate.Year, endDate.Month, 1);
             List<WeatherModel> weatherModels = new List<WeatherModel>();
 
+            _logger.LogInformation("Fetching data from Environment Canada, with {stationId}, {startDate}, {endDate}", stationId, startDate, endDate);
             using (var client = _clientFactory.CreateClient())
             {
                 var date = startDate;
@@ -35,8 +39,8 @@ namespace Weather.Api.Clients
                 {
                     var endpoint = $"{_endpointSettings.EnvironmentCanada}?format=csv&stationID={stationId}&Year={date.Year}&Month={date.Month}&Day=14&timeframe=1&submit=Download+Data";
                     var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
-                    var response = await client.SendAsync(request).ConfigureAwait(false);
-                    var result = await _csvReader.ReadCsv<EnvironmentCanadaMap>(response).ConfigureAwait(false);
+                    var response = await client.SendAsync(request);
+                    var result = await _csvReader.ReadCsv<EnvironmentCanadaMap>(response);
                     weatherModels.AddRange(result);
 
                     date = date.AddMonths(1);
@@ -47,7 +51,7 @@ namespace Weather.Api.Clients
 
         public async Task<IEnumerable<WeatherModel>> GetData(int stationId, DateTime startDate, DateTime endDate)
         {
-            return await DownloadData(stationId, startDate, endDate).ConfigureAwait(false);
+            return await DownloadData(stationId, startDate, endDate);
         }
     }
 }

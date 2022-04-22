@@ -16,12 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Weather.Client\Weather.Client.csproj" />
-    <ProjectReference Include="..\Weather.Data\Weather.Data.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <None Remove="Readers\" />
   </ItemGroup>
   <ItemGroup>

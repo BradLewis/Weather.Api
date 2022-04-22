@@ -31,8 +31,8 @@ namespace Weather.Api.Controllers
             try
             {
                 _logger.LogInformation("Received request for weather. {id}, {startDate}, {endDate}", id, startDate, endDate);
-                var station = await _stationsClient.GetById(id).ConfigureAwait(false);
-                return await _weatherClient.GetData(station.StationId, startDate, endDate).ConfigureAwait(false);
+                var station = await _stationsClient.GetById(id);
+                return await _weatherClient.GetData(station.StationId, startDate, endDate);
             }
             catch (Exception e)
             {
@@ -47,31 +47,15 @@ namespace Weather.Api.Controllers
             try
             {
                 _logger.LogInformation("Received request for weather for today. {name}", name);
-                var stations = await _stationsClient.GetByName(name).ConfigureAwait(false);
+                var stations = await _stationsClient.GetByName(name);
                 var station = stations.FirstOrDefault();
                 var timeNow = DateTime.Now;
-                var weatherData = await _weatherClient.GetData(station.StationId, timeNow, timeNow).ConfigureAwait(false);
+                var weatherData = await _weatherClient.GetData(station.StationId, timeNow, timeNow);
                 return weatherData.Where(x => x.DateTime.Day == timeNow.Day);
             }
             catch (Exception e)
             {
                 _logger.LogError("Error occurred getting todays data for name. {exception}, {name}", e, name);
-                return new List<WeatherModel>();
-            }
-        }
-
-        [HttpGet]
-        public async Task<IEnumerable<WeatherModel>> GetWeatherWithRequest(WeatherRequest request)
-        {
-            try
-            {
-                _logger.LogInformation("Received request for weather with model. {id}, {startDate}, {endDate}", request.Id, request.StartDate, request.EndDate);
-                var station = await _stationsClient.GetById(request.Id).ConfigureAwait(false);
-                return await _weatherClient.GetData(station.StationId, request.StartDate, request.EndDate).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError("Error occurred getting data for request. {exception}, {request}", e, request);
                 return new List<WeatherModel>();
             }
         }
