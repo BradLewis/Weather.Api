@@ -25,10 +25,10 @@ namespace Weather.Api.Clients
             _logger = logger;
         }
 
-        private async Task<IEnumerable<WeatherModel>> DownloadData(int stationId, DateTime startDate, DateTime endDate)
+        private async Task<IEnumerable<WeatherModel>> DownloadData(int stationId, DateOnly startDate, DateOnly endDate)
         {
-            startDate = new DateTime(startDate.Year, startDate.Month, 1);
-            endDate = new DateTime(endDate.Year, endDate.Month, 1);
+            startDate = new DateOnly(startDate.Year, startDate.Month, 1);
+            endDate = new DateOnly(endDate.Year, endDate.Month, 1);
             List<WeatherModel> weatherModels = new List<WeatherModel>();
 
             _logger.LogInformation("Fetching data from Environment Canada, with {stationId}, {startDate}, {endDate}", stationId, startDate, endDate);
@@ -49,7 +49,7 @@ namespace Weather.Api.Clients
             return weatherModels;
         }
 
-        public async Task<IEnumerable<WeatherModel>> GetData(int stationId, DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<WeatherModel>> GetData(int stationId, DateOnly startDate, DateOnly endDate)
         {
             return await DownloadData(stationId, startDate, endDate);
         }

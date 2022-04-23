@@ -10,7 +10,7 @@ namespace Weather.Api.Maps
             Map(x => x.Longitude).Name("Longitude (x)");
             Map(x => x.Latitude).Name("Latitude (y)");
             Map(x => x.StationName).Name("Station Name");
-            Map(x => x.DateTime).Name("Date/Time");
+            Map(x => x.DateTime).Name("Date/Time (LST)");
             Map(x => x.Temperature).Name("Temp (°C)");
             Map(x => x.DewPointTemperature).Name("Dew Point Temp (°C)");
             Map(x => x.RelativeHumidity).Name("Rel Hum (%)");

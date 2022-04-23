@@ -7,6 +7,6 @@ namespace Weather.Api.Clients
 {
     public interface IWeatherClient
     {
-        Task<IEnumerable<WeatherModel>> GetData(int stationId, DateTime startDate, DateTime endDate);
+        Task<IEnumerable<WeatherModel>> GetData(int stationId, DateOnly startDate, DateOnly endDate);
     }
 }

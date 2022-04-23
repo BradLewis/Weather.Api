@@ -12,7 +12,7 @@ namespace Weather.Api.Readers
     {
         public async Task<IEnumerable<WeatherModel>> ReadCsv<T>(HttpResponseMessage response) where T : ClassMap
         {
-            using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+            using (var stream = await response.Content.ReadAsStreamAsync())
             using (var reader = new StreamReader(stream))
             using (var csvReader = new CsvHelper.CsvReader(reader))
             {
