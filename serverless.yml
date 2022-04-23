@@ -3,6 +3,8 @@ frameworkVersion: '3'
 
 provider:
   name: aws
+  httpApi:
+    id: ${ssm:/weather-app/http-api-id}
   ecr:
     images:
       weather-api:
@@ -68,5 +70,9 @@ functions:
   weather-api:
     image:
       name: weather-api
+    events:
+      - httpApi:
+          method: ANY
+          path: /api/weather/{proxy+}
     role: WeatherApiRole
     timeout: 300
