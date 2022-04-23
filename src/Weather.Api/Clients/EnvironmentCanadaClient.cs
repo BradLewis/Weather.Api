@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Weather.Api.Maps;
@@ -25,33 +26,38 @@ namespace Weather.Api.Clients
             _logger = logger;
         }
 
-        private async Task<IEnumerable<WeatherModel>> DownloadData(int stationId, DateOnly startDate, DateOnly endDate)
+        private async Task<IEnumerable<WeatherModel>> DownloadData(int stationId, DateOnly date)
         {
-            startDate = new DateOnly(startDate.Year, startDate.Month, 1);
-            endDate = new DateOnly(endDate.Year, endDate.Month, 1);
             List<WeatherModel> weatherModels = new List<WeatherModel>();
 
-            _logger.LogInformation("Fetching data from Environment Canada, with {stationId}, {startDate}, {endDate}", stationId, startDate, endDate);
-            using (var client = _clientFactory.CreateClient())
+            _logger.LogInformation("Fetching data from Environment Canada, with {stationId}, {date}", stationId, date);
+            using var client = _clientFactory.CreateClient();
+            var endpoint = $"{_endpointSettings.EnvironmentCanada}?format=csv&stationID={stationId}&Year={date.Year}&Month={date.Month}&Day=14&time=LST&timeframe=1&submit=Download+Data";
+            var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
+            var response = await client.SendAsync(request);
+            var result = await _csvReader.ReadCsv<EnvironmentCanadaMap>(response);
+            return result;
+        }
+        private IEnumerable<DateOnly> GetDates(DateOnly startDate, DateOnly endDate)
+        {
+            var dates = new List<DateOnly>();
+            for (var date = startDate; date <= endDate; date = date.AddMonths(1))
             {
-                var date = startDate;
-                while (date <= endDate)
-                {
-                    var endpoint = $"{_endpointSettings.EnvironmentCanada}?format=csv&stationID={stationId}&Year={date.Year}&Month={date.Month}&Day=14&timeframe=1&submit=Download+Data";
-                    var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
-                    var response = await client.SendAsync(request);
-                    var result = await _csvReader.ReadCsv<EnvironmentCanadaMap>(response);
-                    weatherModels.AddRange(result);
-
-                    date = date.AddMonths(1);
-                }
+                dates.Add(date);
             }
-            return weatherModels;
+            return dates;
         }
 
         public async Task<IEnumerable<WeatherModel>> GetData(int stationId, DateOnly startDate, DateOnly endDate)
         {
-            return await DownloadData(stationId, startDate, endDate);
+            startDate = new DateOnly(startDate.Year, startDate.Month, 1);
+            endDate = new DateOnly(endDate.Year, endDate.Month, 1);
+            var dates = GetDates(startDate, endDate);
+
+            var tasks = dates.Select(date => DownloadData(stationId, date));
+            var results = await Task.WhenAll(tasks);
+
+            return results.SelectMany(result => result);
         }
     }
 }
