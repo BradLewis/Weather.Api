@@ -25,7 +25,7 @@ namespace Weather.Api.Controllers
             _stationsClient = stationsClient;
         }
 
-        [HttpGet]
+        [HttpGet("id/{id}")]
         public async Task<IEnumerable<WeatherModel>> GetWeather(int id, DateTime startDate, DateTime endDate)
         {
             try
